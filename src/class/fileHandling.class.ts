@@ -1,4 +1,5 @@
 import fs from "fs";
+import socketIo from "socket.io";
 
 //dts import
 import uploadedFileInfo from "../dts/uploadedFileInfo";
@@ -23,7 +24,7 @@ class FileHandlingClass {
         this.downloadFileService = new downloadFileService();
     }
 
-    public async uploadFileFromBuffer(buffer: Buffer, fileName: string): Promise<uploadedFileInfo> {
+    public async uploadFileFromBuffer(buffer: Buffer, fileName: string, uploadToken: string, io?: socketIo.Server): Promise<uploadedFileInfo> {
 
         const BufferArray = this.uploadFileService.fileSlicer(buffer);
         const files = this.uploadFileService.fileBuilder(BufferArray, this.uploadFileService.fileName(fileName));
@@ -31,6 +32,10 @@ class FileHandlingClass {
 
         for (let i = 0; i < uploadInfo.length; i++) {
             await this.discordService.fileUploadRequest(uploadInfo[i].url, BufferArray[i]);
+            if (uploadToken) {
+                const progress = Math.floor((i + 1) / BufferArray.length * 100);
+                io?.to(uploadToken).emit('progress', progress);
+            }
         }
         const data = await this.discordService.retrieveFileUrl(uploadInfo);
 
@@ -67,11 +72,11 @@ class FileHandlingClass {
 
     }
 
-    public async retrieveFileById(id: string): Promise<{ buffer: Buffer, filename: string } | null>{
+    public async retrieveFileById(id: string, downloadToken?: string, io?: socketIo.Server): Promise<{ buffer: Buffer, filename: string } | null> {
         const fileDocument: FileInfoDocument | null = await FileInfo.findById(id);
         if (!fileDocument)
             return null;
-        const buffer = await this.downloadFileService.downloadFile(fileDocument);
+        const buffer = await this.downloadFileService.downloadFile(fileDocument, downloadToken, io);
 
         return {
             buffer: buffer,
@@ -79,11 +84,11 @@ class FileHandlingClass {
         };
     }
 
-    public async retrieveFileByName(name: string): Promise<{ buffer: Buffer, filename: string } | null> {
+    public async retrieveFileByName(name: string, downloadToken?: string, io?: socketIo.Server): Promise<{ buffer: Buffer, filename: string } | null> {
         const fileDocument: FileInfoDocument | null = await FileInfo.findOne({ filename: name });
         if (!fileDocument)
             return null;
-        const buffer = await this.downloadFileService.downloadFile(fileDocument);
+        const buffer = await this.downloadFileService.downloadFile(fileDocument, downloadToken, io);
 
         return {
             buffer: buffer,
