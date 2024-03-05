@@ -41,7 +41,7 @@ fileRouter.get('/upload', async (req: Request, res: Response) => {
 fileRouter.post('/upload', bodyParser.raw({ type: 'application/octet-stream', limit: '5gb' }), uploadParse, checkFileExist)
 fileRouter.post('/upload', async (req: Request, res: Response) => {
 
-  const fileClass = new FileHandlingClass(process.env.DISCORD_TOKEN as string)
+  const fileClass = new FileHandlingClass(process.env.DISCORD_TOKEN as string, process.env.DISCORD_CHANNEL_ID as string)
 
   const io: socketIo.Server = req.app.get('socketIo');
 
@@ -81,7 +81,7 @@ fileRouter.post('/download', downloadParse, async (req: Request, res: Response) 
 });
 
 fileRouter.get('/download', downloadParse, async (req: Request, res: Response) => {
-  const fileClass = new FileHandlingClass(process.env.DISCORD_TOKEN as string)
+  const fileClass = new FileHandlingClass(process.env.DISCORD_TOKEN as string, process.env.DISCORD_CHANNEL_ID as string)
   const { id, name, downloadToken } = req.query
   var file: { buffer: Buffer; filename: string; } | null = null
 

@@ -18,8 +18,8 @@ class FileHandlingClass {
     private downloadFileService: downloadFileService;
 
 
-    constructor(DiscordToken: string) {
-        this.discordService = new discordService(DiscordToken);
+    constructor(DiscordToken: string, DiscordChanelId: string) {
+        this.discordService = new discordService(DiscordToken, DiscordChanelId);
         this.uploadFileService = new uploadFileService();
         this.downloadFileService = new downloadFileService();
     }
