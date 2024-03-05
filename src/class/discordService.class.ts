@@ -6,9 +6,11 @@ import File from "../dts/file";
 class discordService {
 
   private DiscordToken: string;
+  private discordChannel: string;
 
-  constructor(DiscordToken: string) {
+  constructor(DiscordToken: string, discordChannel: string) {
     this.DiscordToken = DiscordToken;
+    this.discordChannel = discordChannel;
   }
 
   async attachementRequest(files: File[]): Promise<UploadInfo[]> {
@@ -21,7 +23,7 @@ class discordService {
       const filesToSend = files.slice(i * 10, i * 10 + 10);
       const resp = await axios({
         method: "post",
-        url: `https://discord.com/api/v9/channels/1205682992954220625/attachments`,
+        url: `https://discord.com/api/v9/channels/${this.discordChannel}/attachments`,
         headers: {
           Authorization: this.DiscordToken,
           "Content-Type": "application/json"
@@ -76,14 +78,14 @@ class discordService {
       const attachments = attachmentBuilder(filesToSend);
       const resp = await axios({
         method: "post",
-        url: "https://discord.com/api/v9/channels/1205682992954220625/messages",
+        url: `https://discord.com/api/v9/channels/${this.discordChannel}/messages`,
         headers: {
           Authorization: this.DiscordToken,
           "Content-Type": "application/json"
         },
         data: {
           "content": "",
-          "channel_id": "1205682992954220625",
+          "channel_id": this.discordChannel,
           "type": 0,
           "sticker_ids": [],
           "attachments": attachments
