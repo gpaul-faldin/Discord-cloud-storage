@@ -4,6 +4,7 @@ import FileInfo from '../models/fileInfo.model'
 import uploadParse from "../middleware/uploadParse";
 import downloadParse from "../middleware/downloadIdParse";
 import checkFileExist from "../middleware/checkFileExist";
+import fileHandlingParams from "../utils/FileHandlingParams";
 import bodyParser from "body-parser";
 import { v4 as uuidv4 } from 'uuid';
 import socketIo from 'socket.io';
@@ -41,7 +42,16 @@ fileRouter.get('/upload', async (req: Request, res: Response) => {
 fileRouter.post('/upload', bodyParser.raw({ type: 'application/octet-stream', limit: '5gb' }), uploadParse, checkFileExist)
 fileRouter.post('/upload', async (req: Request, res: Response) => {
 
-  const fileClass = new FileHandlingClass(process.env.DISCORD_TOKEN as string)
+  var { retToken, retChannelID } = fileHandlingParams(req.query.discordToken as string, req.query.channelID as string)
+
+  if (!retToken || retToken === "") {
+    return res.status(400).send('No token provided')
+  }
+  if (!retChannelID || retChannelID === "") {
+    return res.status(400).send('No channel ID provided')
+  }
+
+  const fileClass = new FileHandlingClass(retToken, retChannelID)
 
   const io: socketIo.Server = req.app.get('socketIo');
 
@@ -81,7 +91,17 @@ fileRouter.post('/download', downloadParse, async (req: Request, res: Response) 
 });
 
 fileRouter.get('/download', downloadParse, async (req: Request, res: Response) => {
-  const fileClass = new FileHandlingClass(process.env.DISCORD_TOKEN as string)
+
+  var {retToken, retChannelID} = fileHandlingParams(req.query.discordToken as string, req.query.channelID as string)
+
+  if (!retToken) {
+    return res.status(400).send('No token provided')
+  }
+  if (!retChannelID) {
+    return res.status(400).send('No channel ID provided')
+  }
+
+  const fileClass = new FileHandlingClass(retToken, retChannelID)
   const { id, name, downloadToken } = req.query
   var file: { buffer: Buffer; filename: string; } | null = null
 
