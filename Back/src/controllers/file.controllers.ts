@@ -44,17 +44,8 @@ fileRouter.post('/upload', async (req: Request, res: Response) => {
 
   var { retToken, retChannelID } = fileHandlingParams(req.query.discordToken as string, req.query.channelID as string)
 
-  if (!retToken || retToken === "") {
-    return res.status(400).send('No token provided')
-  }
-  if (!retChannelID || retChannelID === "") {
-    return res.status(400).send('No channel ID provided')
-  }
-
   const fileClass = new FileHandlingClass(retToken, retChannelID)
-
   const io: socketIo.Server = req.app.get('socketIo');
-
   const nfo = await fileClass.uploadFileFromBuffer(req.body, req.query.filename as string, req.query.uploadToken as string, io)
   const fileInfo = new FileInfo(nfo)
   await fileInfo.save()
