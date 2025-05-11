@@ -55,11 +55,11 @@ This project is created solely for educational purposes. It is not intended or r
 Discord Cloud Storage is a proof of concept (POC) that explores using Discord as an unconventional cloud storage provider. The project demonstrates innovative techniques for file handling, buffer management, and API integration.
 
 ### 🎯 Key Features
-- **File Storage**: Stores files using Discord's message attachments system
-- **Buffer Management**: Handles file splitting and reassembly for large files
-- **User Authentication**: Integrates with Discord authentication
-- **Modern UI**: Clean, responsive interface for file management
-- **Real-time Updates**: Socket.io integration for real-time process status
+- Stores files using Discord's message attachments system
+- Handles file splitting and reassembly for large files
+- Integrates with Discord authentication
+- Clean, responsive interface for file management
+- Socket.io integration for real-time process status
 
 ### 🛠️ Technology Stack
 - TypeScript
