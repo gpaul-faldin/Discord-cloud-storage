@@ -43,3 +43,32 @@ At the moment, the project lacks multithreading, and all different buffers are f
 ## Disclaimer
 
 This project is created solely for educational purposes. It is not intended or recommended for production use. Engaging in any form of abuse or unauthorized use of another company's storage service, such as Discord, for personal benefit is highly illegal and goes against ethical and legal standards. The developer takes no responsibility for any misuse or illegal activities conducted with this project. Users are advised to comply with all applicable laws and terms of service when interacting with external services.
+
+
+<!-- PORTFOLIO_METADATA_START -->
+<div align="center">
+  <h3>📊 Portfolio Metadata</h3>
+  <p><em>This section is used for automatic project information extraction</em></p>
+</div>
+
+### 📜 Project Overview
+Discord Cloud Storage is a proof of concept (POC) that explores using Discord as an unconventional cloud storage provider. The project demonstrates innovative techniques for file handling, buffer management, and API integration to repurpose Discord's infrastructure for file storage and retrieval.
+
+### 🎯 Key Features
+- **File Storage**: Stores files using Discord's message attachments system
+- **Buffer Management**: Handles file splitting and reassembly for large files
+- **User Authentication**: Integrates with Discord authentication
+- **Modern UI**: Clean, responsive interface for file management
+- **Real-time Updates**: Socket.io integration for real-time process status
+- **API Integration**: Custom Discord API communication
+
+### 🛠️ Technology Stack
+- TypeScript
+- Next.js    
+- TailwindCSS
+- NextUI
+- Framer Motion
+- Express
+- MongoDB (Mongoose)
+- Socket.io
+<!-- PORTFOLIO_METADATA_END -->
