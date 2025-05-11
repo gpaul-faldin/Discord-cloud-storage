@@ -69,6 +69,6 @@ Discord Cloud Storage is a proof of concept (POC) that explores using Discord as
 - NextUI
 - Framer Motion
 - Express
-- MongoDB (Mongoose)
+- MongoDB
 - Socket.io
 <!-- PORTFOLIO_METADATA_END -->
